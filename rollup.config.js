@@ -6,7 +6,7 @@ export default [
 
   // Browser-friendly UMD build
   {
-    input: 'src/esc-pos-encoder.test.js',
+    input: 'src/esc-pos-encoder.js',
     output: {
       name: 'EscPosEncoder',
       file: 'dist/esc-pos-encoder.umd.js',
@@ -21,7 +21,7 @@ export default [
 
   // Browser-friendly ES module build
   {
-    input: 'src/esc-pos-encoder.test.js',
+    input: 'src/esc-pos-encoder.js',
     output: {
       file: 'dist/esc-pos-encoder.esm.js',
       format: 'es',
@@ -35,8 +35,8 @@ export default [
 
   // CommonJS (for Node) and ES module (for bundlers) build
   {
-    input: 'src/esc-pos-encoder.test.js',
-    external: ['canvas', 'canvas-dither', 'canvas-flatten', 'codepage-encoder', 'linewrap'],
+    input: 'src/esc-pos-encoder.js',
+    external: ['pureimage', 'canvas-dither', 'canvas-flatten', 'codepage-encoder', 'linewrap'],
     output: [
       {file: 'dist/esc-pos-encoder.cjs', format: 'cjs'},
       {file: 'dist/esc-pos-encoder.mjs', format: 'es'},
