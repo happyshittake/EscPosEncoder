@@ -47,10 +47,10 @@
     "rollup": "^3.20.7"
   },
   "dependencies": {
+    "canvas-dither": "^1.0.1",
+    "canvas-flatten": "^1.0.1",
     "codepage-encoder": "^2.0.4",
-    "jimp": "^0.22.12",
-    "linewrap": "^0.2.1",
-    "pureimage": "^0.4.13"
+    "linewrap": "^0.2.1"
   },
   "files": [
     "dist"

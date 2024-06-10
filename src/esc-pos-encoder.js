@@ -1,6 +1,7 @@
 import linewrap from 'linewrap';
 import CodepageEncoder from 'codepage-encoder';
-
+import Dither from 'canvas-dither';
+import Flatten from 'canvas-flatten';
 
 const codepageMappings = {
   epson: {
@@ -1161,10 +1162,22 @@ class EscPosEncoder {
     }
 
 
-    element.resize(width, height).greyscale().dither565();
+    let image = Flatten.flatten(element, [0xff, 0xff, 0xff]);
 
-
-    const image = element.bitmap;
+    switch (algorithm) {
+      case 'threshold':
+        image = Dither.threshold(image, threshold);
+        break;
+      case 'bayer':
+        image = Dither.bayer(image, threshold);
+        break;
+      case 'floydsteinberg':
+        image = Dither.floydsteinberg(image);
+        break;
+      case 'atkinson':
+        image = Dither.atkinson(image);
+        break;
+    }
 
 
     const getPixel = (x, y) => x < width && y < height ? (image.data[((width * y) + x) * 4] > 0 ? 0 : 1) : 0;
