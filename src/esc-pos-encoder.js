@@ -1,8 +1,5 @@
 import linewrap from 'linewrap';
-import Dither from 'canvas-dither';
-import Flatten from 'canvas-flatten';
 import CodepageEncoder from 'codepage-encoder';
-import {make} from 'pureimage';
 
 
 const codepageMappings = {
@@ -91,6 +88,7 @@ const codepageMappings = {
     'windows1258': 0x5e,
     'cp775': 0x5f,
   },
+
 
   bixolon: {
     'cp437': 0x00,
@@ -1162,19 +1160,12 @@ class EscPosEncoder {
       threshold = 128;
     }
 
-    const canvas = make(width, height);
-    const context = canvas.getContext('2d');
-    context.drawImage(element, 0, 0, width, height);
-    let image = context.getImageData(0, 0, width, height);
 
-    image = Flatten.flatten(image, [0xff, 0xff, 0xff]);
+    element.resize(width, height).greyscale().dither565();
 
-    switch (algorithm) {
-      case 'threshold': image = Dither.threshold(image, threshold); break;
-      case 'bayer': image = Dither.bayer(image, threshold); break;
-      case 'floydsteinberg': image = Dither.floydsteinberg(image); break;
-      case 'atkinson': image = Dither.atkinson(image); break;
-    }
+
+    const image = element.bitmap;
+
 
     const getPixel = (x, y) => x < width && y < height ? (image.data[((width * y) + x) * 4] > 0 ? 0 : 1) : 0;
 

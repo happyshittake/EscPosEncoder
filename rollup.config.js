@@ -36,7 +36,7 @@ export default [
   // CommonJS (for Node) and ES module (for bundlers) build
   {
     input: 'src/esc-pos-encoder.js',
-    external: ['pureimage', 'canvas-dither', 'canvas-flatten', 'codepage-encoder', 'linewrap'],
+    external: ['jimp', 'codepage-encoder', 'linewrap'],
     output: [
       {file: 'dist/esc-pos-encoder.cjs', format: 'cjs'},
       {file: 'dist/esc-pos-encoder.mjs', format: 'es'},

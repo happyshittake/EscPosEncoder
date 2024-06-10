@@ -1,10 +1,7 @@
 'use strict';
 
 var linewrap = require('linewrap');
-var Dither = require('canvas-dither');
-var Flatten = require('canvas-flatten');
 var CodepageEncoder = require('codepage-encoder');
-var pureimage = require('pureimage');
 
 const codepageMappings = {
   epson: {
@@ -92,6 +89,7 @@ const codepageMappings = {
     'windows1258': 0x5e,
     'cp775': 0x5f,
   },
+
 
   bixolon: {
     'cp437': 0x00,
@@ -1155,27 +1153,12 @@ class EscPosEncoder {
       throw new Error('Height must be a multiple of 8');
     }
 
-    if (typeof algorithm === 'undefined') {
-      algorithm = 'threshold';
-    }
 
-    if (typeof threshold === 'undefined') {
-      threshold = 128;
-    }
+    element.resize(width, height).greyscale().dither565();
 
-    const canvas = pureimage.make(width, height);
-    const context = canvas.getContext('2d');
-    context.drawImage(element, 0, 0, width, height);
-    let image = context.getImageData(0, 0, width, height);
 
-    image = Flatten.flatten(image, [0xff, 0xff, 0xff]);
+    const image = element.bitmap;
 
-    switch (algorithm) {
-      case 'threshold': image = Dither.threshold(image, threshold); break;
-      case 'bayer': image = Dither.bayer(image, threshold); break;
-      case 'floydsteinberg': image = Dither.floydsteinberg(image); break;
-      case 'atkinson': image = Dither.atkinson(image); break;
-    }
 
     const getPixel = (x, y) => x < width && y < height ? (image.data[((width * y) + x) * 4] > 0 ? 0 : 1) : 0;
 
